@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="webjars/bootstrap/5.0.0-beta2/css/bootstrap.min.css"/>
+    <!--<script type="text/javascript" src="webjars/jquery/3.6.0/jquery.min.js"></script>-->
+    <!-- Bootstrap Bundle with Popper -->
+    <script type="text/javascript" src="webjars/bootstrap/5.0.0-beta2/js/bootstrap.min.js"></script>
+
+    <title>Login page</title>
+</head>
+<body class="bg-light">
+<br/>
+<br/>
+<div class="container col-md-3">
+    <form role="form" method="post" action="/login">
+        <h1 class="h2">Please sign in</h1>
+        <p>
+            <input type="text" class="form-control" id="username" name="j_username"
+                   placeholder="Email address" required autofocus/>
+            <input type="password" class="form-control" id="password" name="j_password"
+                   placeholder="Password" required/>
+        </p>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
