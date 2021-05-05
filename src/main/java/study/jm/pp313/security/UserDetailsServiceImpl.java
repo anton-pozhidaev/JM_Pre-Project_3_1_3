@@ -1,4 +1,4 @@
-package study.jm.pp313.service;
+package study.jm.pp313.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

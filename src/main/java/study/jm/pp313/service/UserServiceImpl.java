@@ -35,24 +35,25 @@ public class UserServiceImpl implements UserService {
         userAndAdminRoles.addAll(adminRole);
 
         initUsersList.add(new User("Vladimir", "Putin", "putya@mainbunker.ru"
-                , "13-12-19xx", "USSR, Popamira 123"
+                , "1999-12-19", "USSR, Popamira 123"
                 ,"1234", adminRole));
 
         initUsersList.add(new User("Dmitriy", "Peskov", "pesok@kremlin.ru",
-                "13-12-19xx", "USSR, Popamira 456"
+                "1999-12-20", "USSR, Popamira 456"
                 ,"1234", userRole));
 
         initUsersList.add(new User("Uasya", "Vatnikov", "vata@mail.ru",
-                "13-12-19xx", "USSR, Popamira 789"
+                "1999-12-21", "USSR, Popamira 789"
                 ,"1234", viewerRole));
 
         initUsersList.add(new User("Alexey", "Navalniy", "leha@better-future.ru",
-                "13-12-19xx", "USSR, Moscow"
+                "1999-12-22", "USSR, Moscow"
                 ,"1234", userAndAdminRoles));
 
         initUsersList.add(new User("Vladimir", "Solovyov", "pomet@trash.ru",
-                "13-12-19xx", "USSR, Popamira 666"
+                "1999-12-23", "USSR, Popamira 666"
                 ,"1234", userRole));
+
         for (User user : initUsersList) {
             this.add(user);
         }

@@ -32,9 +32,6 @@ public class User implements UserDetails {
     @Column(name = "address")
     private String address;
 
-//    @Column(name = "login")
-//    private String login;
-
     @Column(name = "password")
     private String password;
 
@@ -53,7 +50,6 @@ public class User implements UserDetails {
         this.email = email;
         this.birthday = birthday;
         this.address = address;
-//        this.login = login;
         this.password = password;
         this.roles = roles;
     }
@@ -82,24 +78,8 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-//    public String getLogin() {
-//        return login;
-//    }
-//
-//    public void setLogin(String login) {
-//        this.login = login;
-//    }
-
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public String getEmail() {
@@ -124,6 +104,14 @@ public class User implements UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -167,7 +155,6 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-//                ", login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 ", birthday='" + birthday + '\'' +
                 ", address='" + address + '\'' +

@@ -51,12 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").anonymous()
                 .antMatchers("/").authenticated()
                 .antMatchers("/hello").authenticated()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/user/**").access("hasAnyRole('USER', 'ADMIN')");
+                .antMatchers("/api/**").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/api/**").anonymous()
+                .antMatchers("/admin").hasAnyRole("ADMIN", "USER");
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-          return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(12);
     }
 }
