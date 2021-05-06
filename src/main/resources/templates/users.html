@@ -152,7 +152,7 @@
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close
                                                 </button>
-                                                <button type="submit" class="btn btn-primary" onclick="editUser()">
+                                                <button type="button" class="btn btn-primary" onclick="editUser()">
                                                     Edit
                                                 </button>
                                             </div>
@@ -162,10 +162,10 @@
                             </div>
 
                             <!-- Delete user modal -->
-                            <div class="modal fade" id="deleteModal"
-                                 data-bs-backdrop="static"
-                                 data-bs-keyboard="false" tabindex="-1"
-                                 aria-labelledby="deleteStaticBackdropLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteModal" role="dialog"
+                                 data-bs-backdrop="static" data-bs-keyboard="false"
+                                 tabindex="-1" aria-labelledby="deleteStaticBackdropLabel"
+                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <form class="text-center">
@@ -236,7 +236,7 @@
                                                 <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close
                                                 </button>
-                                                <button type="submit" class="btn btn-danger" onclick="deleteUser()">
+                                                <button type="button" class="btn btn-danger" onclick="deleteUser()">
                                                     Delete
                                                 </button>
                                             </div>
@@ -289,7 +289,6 @@
                                                 </div>
 
                                                 <div class="form-group" id="addCheckbox">
-                                                    <!-- <input type="checkbox"> -->
 
                                                 </div>
 

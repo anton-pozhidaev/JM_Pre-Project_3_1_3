@@ -1,7 +1,3 @@
-// setTimeout(() => {
-//     alert('Some test message')
-// }, 2000)
-
 const usersURL = 'http://localhost:8081/api/admin'
 const rolesURL = 'http://localhost:8081/api/admin/roles'
 let rolesBuffer
@@ -73,25 +69,23 @@ function deleteRequest(url) {
         .catch(err => console.error(err))
 }
 
+/*
+    Initialization
+*/
 function documentReady() {
-    $(document).ready(() => {
-        document.getElementById("editCheckbox").innerHTML = ''
-        document.getElementById("addCheckbox").innerHTML = ''
-        document.getElementById("deleteCheckbox").innerHTML = ''
+    document.getElementById("editCheckbox").innerHTML = ''
+    document.getElementById("addCheckbox").innerHTML = ''
+    document.getElementById("deleteCheckbox").innerHTML = ''
 
-        getRequest(usersURL).then(data => insertUsersData(data))
-        getRequest(rolesURL).then(data => {
-            rolesBuffer = data
-            createCheckbox(data, "editCheckbox")
-            createCheckbox(data, "addCheckbox")
-            createCheckbox(data, "deleteCheckbox")
-        })
+    getRequest(usersURL).then(data => insertUsersData(data))
+    getRequest(rolesURL).then(data => {
+        rolesBuffer = data
+        createCheckbox(data, "editCheckbox")
+        createCheckbox(data, "addCheckbox")
+        createCheckbox(data, "deleteCheckbox")
     })
 }
 
-/*
-    Insert users data to table body
-*/
 function insertUsersData(data) {
     for (let i = 0; i < data.length; i++) {
         let tableRow = document.createElement("tr")
@@ -109,50 +103,29 @@ function insertUsersData(data) {
     }
 }
 
-/*
-function createFormSelect(data, elementName) {
-    const rolesFormSelect = document.getElementById(elementName)
-    for (let i = 0; i < data.length; i++) {
-        let label = document.createElement("label")
-        label.setAttribute("class", "form-label h6")
-        label.innerText = rolesBuffer[i].role
-        let checkbox = document.createElement("input")
-        checkbox.setAttribute("class", "form-check-input me-2")
-        checkbox.setAttribute("type", "checkbox")
-        checkbox.setAttribute("id", rolesBuffer[i].id + elementName)
-        rolesFormSelect.appendChild(label)
-        rolesFormSelect.appendChild(checkbox)
-
-        checkbox.addEventListener('change', () => {
-            if (checkbox.hasAttribute("checked")) {
-                checkbox.removeAttribute("checked")
-            } else {
-                checkbox.setAttribute("checked", "true")
-            }
-        })
-    }
-}
-*/
-
 function createCheckbox(data, elementName) {
     const rolesCheckbox = document.getElementById(elementName)
 
     for (let i = 0; i < data.length; i++) {
-        let label = document.createElement("label")
-        label.setAttribute("class", "form-label h6")
-        label.innerText = rolesBuffer[i].role
+        let formCheckInline = document.createElement("div")
+        formCheckInline.setAttribute("class", "form-check form-check-inline mx-0")
 
         let checkbox = document.createElement("input")
-        checkbox.setAttribute("class", "form-check-input me-2")
+        checkbox.setAttribute("class", "form-check-input mx-0")
         checkbox.setAttribute("type", "checkbox")
+        checkbox.setAttribute("value", "")
         checkbox.setAttribute("id", rolesBuffer[i].id + elementName)
         if (elementName === 'deleteCheckbox') {
-            checkbox.readOnly = true
-            console.log('Readonly attr for deleteCheckbox has added!')
+            checkbox.disabled = true
         }
 
-        rolesCheckbox.appendChild(label)
-        rolesCheckbox.appendChild(checkbox)
+        let label = document.createElement("label")
+        label.setAttribute("class", "form-check-label h6 mx-0")
+        label.innerText = rolesBuffer[i].role
+
+        formCheckInline.appendChild(label)
+        formCheckInline.appendChild(checkbox)
+        rolesCheckbox.appendChild(formCheckInline)
 
         checkbox.addEventListener('change', () => {
             if (checkbox.hasAttribute("checked")) {
@@ -164,13 +137,9 @@ function createCheckbox(data, elementName) {
     }
 }
 
-function clearCheckboxes(elementName) {
-    rolesBuffer.forEach(role => {
-        document.getElementById(role.id + elementName)
-            .removeAttribute("checked")
-    })
-}
-
+/*
+    Edit user
+*/
 function editModal() {
 
     $("#editModal").modal('show')
@@ -221,13 +190,17 @@ function editUser() {
         roles: rolesArray
     }
 
-    putRequest(usersURL, 'PUT', body).then(data => {
-        document.getElementById("tableData").innerHTML = ''
-        documentReady()
-    })
+    putRequest(usersURL, 'PUT', body)
+        .then(data => {
+            document.getElementById("usersData").innerHTML = ''
+            documentReady()
+        })
         .then($("#editModal").modal('hide'))
 }
 
+/*
+    Delete user
+*/
 function deleteModal() {
 
     $("#deleteModal").modal("show")
@@ -258,12 +231,14 @@ function deleteUser() {
     deleteRequest(usersURL + '/' + $("#idDelete").val())
         .then(data => {
             document.getElementById("usersData").innerHTML = ''
-            // document.querySelector("tr", id).
             documentReady()
         })
         .then($("#deleteModal").modal('hide'))
 }
 
+/*
+    Add user
+*/
 function addUser() {
 
     let rolesArray = []
@@ -283,20 +258,18 @@ function addUser() {
         roles: rolesArray
     }
 
-    postRequest(usersURL, 'POST', body).then(data => {
-        document.getElementById("usersData").innerHTML = ''
-        documentReady()
-    })
-        // .then($("#addModal").modal('hide'))
-        .then(newUserFormClear)
-}
-
-function newUserFormClear() {
-    $("#firstNameNew").val('')
-    $("#lastNameNew").val('')
-    $("#emailNew").val('')
-    $("#birthdayNew").val('')
-    $("#passwordNew").val('')
+    postRequest(usersURL, 'POST', body)
+        .then(data => {
+            document.getElementById("usersData").innerHTML = ''
+            documentReady()
+        })
+        .then(() => {
+            $("#firstNameNew").val('')
+            $("#lastNameNew").val('')
+            $("#emailNew").val('')
+            $("#birthdayNew").val('')
+            $("#passwordNew").val('')
+        })
 }
 
 documentReady()
