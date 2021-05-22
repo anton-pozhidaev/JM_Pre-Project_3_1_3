@@ -50,7 +50,7 @@ function putRequest(url, method, body = null) {
             return response.json()
         }
         return response.json().then(error => {
-            const e = new Error('Something wrong PUT request')
+            const e = new Error('Something wrong while PUT request')
             e.data = error
             throw e
         })
@@ -95,6 +95,7 @@ function insertUsersData(data) {
                     <td>${data[i].firstName}</td>
                     <td>${data[i].lastName}</td>
                     <td>${data[i].email}</td>
+                    <td>${data[i].authProvider}</td>
                     <td style="color:darkorange">${data[i].roles.map(role => role.role).join(' ')}</td>
                     <td><button class='btn btn-info' data-toggle='modal' onclick='editModal()'>Edit</button></td>
                     <td><button class='btn btn-danger' data-toggle='modal' onclick='deleteModal()'>Delete</button></td>

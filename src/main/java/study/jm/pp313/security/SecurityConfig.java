@@ -13,17 +13,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import study.jm.pp313.security.handler.LoginSuccessHandler;
+import study.jm.pp313.security.oauth.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final LoginSuccessHandler loginSuccessHandler;
+    private final CustomOAuth2UserService oAuth2UserService;
 
     @Autowired
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
+                          LoginSuccessHandler loginSuccessHandler,
+                          CustomOAuth2UserService oAuth2UserService) {
         this.userDetailsService = userDetailsService;
         this.loginSuccessHandler = loginSuccessHandler;
+        this.oAuth2UserService = oAuth2UserService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
     @Autowired
@@ -35,11 +45,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 .loginPage("/login")
-                .successHandler(loginSuccessHandler)
                 .loginProcessingUrl("/login")
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
-                .permitAll()
+                .successHandler(loginSuccessHandler)
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oAuth2UserService)
+                .and()
+                .successHandler(loginSuccessHandler)
                 .and().csrf().disable();
 
         http.logout()
@@ -52,12 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").authenticated()
                 .antMatchers("/hello").authenticated()
                 .antMatchers("/api/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/api/**").anonymous()
                 .antMatchers("/admin").hasAnyRole("ADMIN", "USER");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
     }
 }

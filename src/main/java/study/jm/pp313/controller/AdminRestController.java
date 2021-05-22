@@ -3,20 +3,14 @@ package study.jm.pp313.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import study.jm.pp313.dao.RoleDao;
 import study.jm.pp313.model.Role;
 import study.jm.pp313.model.User;
 import study.jm.pp313.service.UserService;
 
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,22 +45,21 @@ public class AdminRestController {
     @PostMapping()
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        Set<Role> userRolesForCreate = user.getRoles().stream()
-                .map(role -> roleDao.findByRoleName(role.getRole()))
-                .collect(Collectors.toSet());
-        user.setRoles(userRolesForCreate);
         userService.add(user);
 
         return new ResponseEntity<>(user, headers, HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ResponseEntity<User> updateUser(@RequestBody User user, UriComponentsBuilder builder) {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -77,14 +70,16 @@ public class AdminRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
-        User user = userService.get(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
+        User user = userService.get(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         userService.delete(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(user, headers, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping()

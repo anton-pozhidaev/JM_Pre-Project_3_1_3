@@ -35,7 +35,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider")
+    private AuthenticationProvider authProvider;
+
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -44,13 +49,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String birthday, String address, String password, Set<Role> roles) {
+    public User(String firstName, String lastName, String email, String birthday, String address, String password, AuthenticationProvider authProvider, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.birthday = birthday;
         this.address = address;
         this.password = password;
+        this.authProvider = authProvider;
         this.roles = roles;
     }
 
@@ -62,7 +68,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getFirstName() {
+    public Object getFirstName() {
         return firstName;
     }
 
@@ -104,6 +110,14 @@ public class User implements UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public AuthenticationProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthenticationProvider authenticationProvider) {
+        this.authProvider = authenticationProvider;
     }
 
     public Set<Role> getRoles() {

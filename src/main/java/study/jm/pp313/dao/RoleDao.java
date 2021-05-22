@@ -6,7 +6,9 @@ import java.util.Collection;
 
 public interface RoleDao {
 
-    Role findByRoleName(String role);
+    void addRole(Role role);
+
+    Role findRoleByName(String role);
 
     Collection<Role> getAllRoles();
 }

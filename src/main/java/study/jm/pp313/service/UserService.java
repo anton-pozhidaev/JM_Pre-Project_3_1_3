@@ -4,6 +4,7 @@ package study.jm.pp313.service;
 import study.jm.pp313.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -20,5 +21,7 @@ public interface UserService {
     User findUserByUsername(String login);
 
     void addInitUsersToDB();
+
+    void processOAuthPostLogin(String username, Map<String, Object> attributes);
 }
 

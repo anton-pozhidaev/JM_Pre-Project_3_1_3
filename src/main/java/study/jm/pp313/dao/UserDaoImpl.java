@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import study.jm.pp313.model.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -29,8 +30,12 @@ public class UserDaoImpl implements UserDao {
     public User findUserByLogin(String email) {
         TypedQuery<User> query = em.createQuery("SELECT user FROM User user WHERE user.email=:l", User.class);
         query.setParameter("l", email);
-        User usr = query.getSingleResult();
-        return usr;
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+//            System.out.println(e.getMessage() + " in " + this.getClass().getName());
+            return null;
+        }
     }
 
     @Override

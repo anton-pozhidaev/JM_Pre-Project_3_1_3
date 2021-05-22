@@ -17,7 +17,13 @@ public class RoleDaoImpl implements RoleDao {
 
     @Transactional
     @Override
-    public Role findByRoleName(String roleName) {
+    public void addRole(Role role) {
+        em.persist(role);
+    }
+
+    @Transactional
+    @Override
+    public Role findRoleByName(String roleName) {
         TypedQuery<Role> query = em.createQuery("SELECT role FROM Role role WHERE role.role=:r", Role.class);
         query.setParameter("r", roleName);
         Role role = query.getSingleResult();
